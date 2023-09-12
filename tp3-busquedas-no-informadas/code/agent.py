@@ -7,13 +7,13 @@ from environment import Environment
 class Agent:
     def __init__(self, env: Environment):
         self.env = env
-        self.posX = env.initial_position[0]
-        self.posY = env.initial_position[1]
+        self.posX = env.initial_position.posX
+        self.posY = env.initial_position.posY
         self.points = 0
         self.remaining_actions = 1000
         self.path = []
 
-        while (self.posX != env.goal_position[0] and self.posY != env.goal_position[1] and  self.remaining_actions > 0):
+        while (self.posX != env.goal_position.posX and self.posY != env.goal_position.posY and  self.remaining_actions > 0):
             self.think()
     
     def perform_action(self, action: Action):
@@ -35,7 +35,7 @@ class Agent:
             
 
     def is_slot_obstacle(self):
-        return self.env.is_obstacle(self.posX, self.posY)
+        return self.env.matrix[self.posX][self.posY].isObstacle
 
     def think(self):
         if (self.is_random_agent):
