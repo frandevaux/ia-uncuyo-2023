@@ -1,7 +1,7 @@
 import random
 from action import Action
 from environment import Environment
-
+from color import Color
 
 
 class Agent:
@@ -13,8 +13,7 @@ class Agent:
         self.remaining_actions = 1000
         self.path = []
 
-        while (self.posX != env.goal_position.posX and self.posY != env.goal_position.posY and  self.remaining_actions > 0):
-            self.think()
+
     
     def perform_action(self, action: Action):
         if (self.env.is_valid_action(self, action)):
@@ -37,12 +36,23 @@ class Agent:
     def is_slot_obstacle(self):
         return self.env.matrix[self.posX][self.posY].isObstacle
 
-    def think(self):
-        if (self.is_random_agent):
-            self.perform_action(random.choice(list(Action)))
-        else: 
-            if(self.is_slot_obstacle()):
-                self.perform_action(Action.CLEAN)
-            else:
-                directions = [Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT]
-                self.perform_action(random.choice(directions))
+
+
+    def bfs(self):
+        currentSlot = self.env.initial_position
+        queue = []
+        queue.append(currentSlot)
+        currentSlot.color = Color.GREY
+
+        while (len(queue) > 0):
+            currentSlot = queue.pop(0)
+
+            if (currentSlot == self.env.goal_position):
+                print("Goal found")
+                return True
+
+            for slot in currentSlot.adjacentSlots:
+                if (slot.color == Color.WHITE):
+                    slot.color = Color.GREY
+                    queue.append(slot)
+            currentSlot.color = Color.BLACK

@@ -5,14 +5,19 @@ from color import Color
 
 
 class Environment:
-    def __init__(self, matrixSize: int, initial_position: Slot, goal_position: Slot):
+    def __init__(self, matrixSize: int, initial_position: tuple, goal_position: tuple):
         self.matrix = [[Slot(i, j) for i in range(matrixSize)] for j in range(matrixSize)]
         self.matrixSize = matrixSize
-        self.initial_position = initial_position
-        self.goal_position = goal_position
+        self.initial_position = self.matrix[initial_position[0]][initial_position[1]]
+        self.goal_position = self.matrix[goal_position[0]][goal_position[1]]
         self.init_slots()
 
     def init_slots(self):
+
+        for i in range(self.matrixSize):
+            for j in range(self.matrixSize):
+                self.adjacent_slots(self.matrix[i][j])
+
 
         obstacles_left = 0.08 * self.matrixSize * self.matrixSize
         while obstacles_left > 0:
@@ -24,6 +29,18 @@ class Environment:
                 self.matrix[x][y].isObstacle = True
                 obstacles_left -= 1
 
+    def adjacent_slots(self, slot: Slot):
+        adjacentSlots = []
+        if (slot.posX + 1 < self.matrixSize and self.matrix[slot.posX + 1][slot.posY].isObstacle == False):
+            adjacentSlots.append(self.matrix[slot.posX + 1][slot.posY])
+        if (slot.posX - 1 >= 0 and self.matrix[slot.posX - 1][slot.posY].isObstacle == False) :
+            adjacentSlots.append(self.matrix[slot.posX - 1][slot.posY])
+        if (slot.posY + 1 < self.matrixSize and self.matrix[slot.posX][slot.posY + 1].isObstacle == False):
+            adjacentSlots.append(self.matrix[slot.posX][slot.posY + 1])
+        if (slot.posY - 1 >= 0 and self.matrix[slot.posX][slot.posY - 1].isObstacle == False):
+            adjacentSlots.append(self.matrix[slot.posX][slot.posY - 1])
+
+        slot.adjacentSlots = adjacentSlots
     def is_valid_action(self, coord: Slot, action: Action):
         posX = coord.posX
         posY = coord.posY
