@@ -2,9 +2,12 @@ from environment import Environment
 from slot import Slot
 from agent import Agent
 
-env= Environment(100, (0,0), (99,99))
+env= Environment(15, (0,0), (10,10))
 
 env.print_environment()
 
 agent = Agent(env)
-agent.bfs()
+bfs = agent.bfs()
+env.print_environment(None, bfs)
+
+

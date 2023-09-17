@@ -2,6 +2,7 @@ import random
 from action import Action
 from environment import Environment
 from color import Color
+from slot  import Slot
 
 
 class Agent:
@@ -40,19 +41,45 @@ class Agent:
 
     def bfs(self):
         currentSlot = self.env.initial_position
+        if currentSlot == self.env.goal_position:
+            return [currentSlot]
         queue = []
         queue.append(currentSlot)
+        explored = []
+
+        while queue:
+            currentSlot = queue.pop(0)
+            explored.append(currentSlot)
+            self.env.print_environment(currentSlot)
+            for action in Action:
+                if self.env.is_valid_action(currentSlot, action):
+                    slot = self.env.get_slot(currentSlot, action)
+                    if slot not in explored and slot not in queue:
+                        slot.parent = currentSlot
+                        if slot == self.env.goal_position:
+                            return self.findPath(slot, [])
+                        queue.append(slot)
+
+
+
+    def dfs(self, currentSlot:Slot):
         currentSlot.color = Color.GREY
 
-        while (len(queue) > 0):
-            currentSlot = queue.pop(0)
+        if (currentSlot == self.env.goal_position):
+            print("Goal found")
+            return self.findPath(currentSlot, [])
+        for slot in currentSlot.adjacentSlots:
+            if (slot.color == Color.WHITE):
+                slot.parent = currentSlot
+                return self.dfs(slot)
+        currentSlot.color = Color.BLACK
 
-            if (currentSlot == self.env.goal_position):
-                print("Goal found")
-                return True
+    def findPath(self, slot: Slot, path):
 
-            for slot in currentSlot.adjacentSlots:
-                if (slot.color == Color.WHITE):
-                    slot.color = Color.GREY
-                    queue.append(slot)
-            currentSlot.color = Color.BLACK
+        path.append(slot)
+        while slot != None:
+            slot.isPath=True
+
+            return self.findPath(slot.parent, path)
+
+        return path
