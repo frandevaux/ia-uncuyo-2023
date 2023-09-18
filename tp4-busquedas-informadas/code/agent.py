@@ -15,6 +15,52 @@ class Agent:
         self.remaining_actions = 1000
         self.path = []
 
+    def astar(self):
+        matrix_size = self.env.matrix_size
+        visited = set()
+        cost_so_far = [[numpy.inf] * matrix_size for _ in range(matrix_size)]
+        cost_so_far[self.env.initial_position[0]][self.env.initial_position[1]] = 0
+        priority_queue = [(0, self.env.initial_position)]
+        heapq.heapify(priority_queue)
+        self.path = [[None for _ in range(matrix_size)] for _ in range(matrix_size)]
+
+        while priority_queue:
+            cost, (x, y) = heapq.heappop(priority_queue)
+
+            if (x, y) == self.env.goal_position:
+                path = []
+                while (x, y) != self.env.initial_position:
+                    path.append((x, y))
+                    x, y = self.path[x][y]
+                path.append(self.env.initial_position)
+                path.reverse()
+                return path, len(visited)
+
+            if (x, y) in visited:
+                continue
+
+            visited.add((x, y))
+
+            possibles_moves = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+            for moves in possibles_moves:
+                new_x, new_y = x + moves[0], y + moves[1]
+
+                if 0 <= new_x < matrix_size and 0 <= new_y < matrix_size and self.env.matrix[new_x][new_y] == 0:
+                    new_cost = cost + 1
+
+                    # Estimación heurística (en este caso, distancia Manhattan)
+                    heuristic = abs(new_x - self.env.goal_position[0]) + abs(new_y - self.env.goal_position[1])
+
+                    priority = new_cost + heuristic
+
+                    if new_cost < cost_so_far[new_x][new_y]:
+                        cost_so_far[new_x][new_y] = new_cost
+                        heapq.heappush(priority_queue, (priority, (new_x, new_y)))
+                        self.path[new_x][new_y] = (x, y)
+
+        return [], len(visited)
+
     def bfs(self):
         matrix_size = self.env.matrix_size
         visited = []
