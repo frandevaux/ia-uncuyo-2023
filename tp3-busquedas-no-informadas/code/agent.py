@@ -1,85 +1,54 @@
 import random
-from action import Action
+from collections import deque
 from environment import Environment
-from color import Color
-from slot  import Slot
 
 
 class Agent:
     def __init__(self, env: Environment):
         self.env = env
-        self.posX = env.initial_position.posX
-        self.posY = env.initial_position.posY
+        self.posX = env.initial_position[0]
+        self.posY = env.initial_position[1]
         self.points = 0
         self.remaining_actions = 1000
         self.path = []
 
-
-    
-    def perform_action(self, action: Action):
-        if (self.env.is_valid_action(self, action)):
-            
-        
-            match action:
-                case Action.DOWN:
-                    self.posY += 1
-                case Action.UP:
-                    self.posY -= 1
-                case Action.RIGHT:
-                    self.posX += 1
-                case Action.LEFT:
-                    self.posX -= 1
-                
-            
-            self.remaining_actions -= 1
-            
-
-    def is_slot_obstacle(self):
-        return self.env.matrix[self.posX][self.posY].isObstacle
-
-
-
     def bfs(self):
-        currentSlot = self.env.initial_position
-        if currentSlot == self.env.goal_position:
-            return [currentSlot]
-        queue = []
-        queue.append(currentSlot)
-        explored = []
+        filas, columnas = self.env.matrixSize, self.env.matrixSize
+        visitado = [[False for _ in range(columnas)] for _ in range(filas)]
+        padres = [[None for _ in range(columnas)] for _ in range(filas)]
+        cola = deque()
+        cola.append(self.env.initial_position)
+        visitado[self.env.initial_position[0]][self.env.initial_position[1]] = True
 
-        while queue:
-            currentSlot = queue.pop(0)
-            explored.append(currentSlot)
-            self.env.print_environment(currentSlot)
-            for action in Action:
-                if self.env.is_valid_action(currentSlot, action):
-                    slot = self.env.get_slot(currentSlot, action)
-                    if slot not in explored and slot not in queue:
-                        slot.parent = currentSlot
-                        if slot == self.env.goal_position:
-                            return self.findPath(slot, [])
-                        queue.append(slot)
+        while cola:
+            fila, columna = cola.popleft()
+
+            # Verificar si hemos llegado al punto final
+            if (fila, columna) == self.env.goal_position:
+                # Reconstruir el camino
+                camino = []
+                while (fila, columna) != self.env.initial_position:
+                    camino.append((fila, columna))
+                    fila, columna = padres[fila][columna]
+                camino.append(self.env.initial_position)
+                camino.reverse()
+                return camino
+
+            # Generar los vecinos posibles (arriba, abajo, izquierda, derecha)
+            movimientos = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+            for movimiento in movimientos:
+                nueva_fila, nueva_columna = fila + movimiento[0], columna + movimiento[1]
+
+                # Verificar si la nueva posición está dentro de la matriz y no es un obstáculo
+                if 0 <= nueva_fila < filas and 0 <= nueva_columna < columnas and not visitado[nueva_fila][
+                    nueva_columna] and self.env.matrix[nueva_fila][nueva_columna] == 0:
+                    cola.append((nueva_fila, nueva_columna))
+                    visitado[nueva_fila][nueva_columna] = True
+                    padres[nueva_fila][nueva_columna] = (fila, columna)
+
+        # Si no se encuentra un camino, devuelve una lista vacía
+        return []
 
 
 
-    def dfs(self, currentSlot:Slot):
-        currentSlot.color = Color.GREY
-
-        if (currentSlot == self.env.goal_position):
-            print("Goal found")
-            return self.findPath(currentSlot, [])
-        for slot in currentSlot.adjacentSlots:
-            if (slot.color == Color.WHITE):
-                slot.parent = currentSlot
-                return self.dfs(slot)
-        currentSlot.color = Color.BLACK
-
-    def findPath(self, slot: Slot, path):
-
-        path.append(slot)
-        while slot != None:
-            slot.isPath=True
-
-            return self.findPath(slot.parent, path)
-
-        return path

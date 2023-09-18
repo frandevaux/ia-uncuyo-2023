@@ -1,13 +1,10 @@
 from environment import Environment
-from slot import Slot
 from agent import Agent
 
-env= Environment(15, (0,0), (10,10))
-
-env.print_environment()
-
+env= Environment(50, (0,0), (49,49))
 agent = Agent(env)
-bfs = agent.bfs()
-env.print_environment(None, bfs)
+    # Realizar la búsqueda a lo ancho y obtener el camino
+camino_encontrado = agent.bfs()
+env.print_environment(camino_encontrado)
 
 
