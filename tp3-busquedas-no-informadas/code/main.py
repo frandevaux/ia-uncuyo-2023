@@ -1,30 +1,5 @@
-from environment import Environment
-from agent import Agent
+from plotter import boxPlotGenerator
 
-env = Environment(100, (0, 0), (99, 99))
-agent = Agent(env)
+for i in range(1):
+    boxPlotGenerator(10, 'results_iteration_' + str(i+1) +'.csv', 'boxplot' + str(i+1) + '.png')
 
-print( "Busqueda a lo ancho: ")
-result = agent.bfs()
-print("Cantidad de nodos visitados: ", result[1])
-print("Longitud del camino: ", len(result[0]))
-env.print_environment(result[0])
-
-
-print( "Busqueda de costo uniforme: ")
-result = agent.ucs()
-print("Cantidad de nodos visitados: ", result[1])
-print("Longitud del camino: ", len(result[0]))
-env.print_environment(result[0])
-
-print( "Busqueda en profundidad: ")
-result = agent.dfs()
-print("Cantidad de nodos visitados: ", result[1])
-print("Longitud del camino: ", len(result[0]))
-env.print_environment(result[0])
-
-print( "Busqueda en profundidad limitada: ")
-result = agent.ldfs(1000)
-print("Cantidad de nodos visitados: ", result[1])
-print("Longitud del camino: ", len(result[0]))
-env.print_environment(result[0])
