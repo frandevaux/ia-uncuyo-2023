@@ -23,14 +23,14 @@ print("Longitud del camino: ", len(result[0]))
 env.print_environment(result[0])
 """
 print( "Busqueda con A*: ")
-result = agent.astar()
+result = agent.a_star()
 print("Cantidad de nodos visitados: ", result[1])
 print("Longitud del camino: ", len(result[0]))
-env.print_environment(result[0])
+#env.print_environment(result[0])
 
 print( "Busqueda de costo uniforme: ")
 result = agent.ucs()
 print("Cantidad de nodos visitados: ", result[1])
 print("Longitud del camino: ", len(result[0]))
-env.print_environment(result[0])
+#env.print_environment(result[0])
 

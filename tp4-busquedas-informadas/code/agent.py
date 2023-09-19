@@ -1,10 +1,15 @@
 from collections import deque
 
 import numpy
-
+import math
 from environment import Environment
 import heapq
 
+
+def euclidean_distance(x, y):
+    x1, y1 = x
+    x2, y2 = y
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 class Agent:
     def __init__(self, env: Environment):
@@ -15,51 +20,58 @@ class Agent:
         self.remaining_actions = 1000
         self.path = []
 
-    def astar(self):
-        matrix_size = self.env.matrix_size
-        visited = set()
-        cost_so_far = [[numpy.inf] * matrix_size for _ in range(matrix_size)]
-        cost_so_far[self.env.initial_position[0]][self.env.initial_position[1]] = 0
-        priority_queue = [(0, self.env.initial_position)]
-        heapq.heapify(priority_queue)
-        self.path = [[None for _ in range(matrix_size)] for _ in range(matrix_size)]
+
+
+    # Función para realizar la búsqueda A*
+    def a_star(self):
+
+        visitado = [[False for _ in range(self.env.matrix_size)] for _ in range(self.env.matrix_size)]
+        g = [[numpy.inf for _ in range(self.env.matrix_size)] for _ in range(self.env.matrix_size)]
+        f = [[numpy.inf for _ in range(self.env.matrix_size )] for _ in range(self.env.matrix_size )]
+        start = self.env.initial_position
+        g[start[0]][start[1]] = 0
+        f[start[0]][start[1]] = euclidean_distance(start, self.env.goal_position)
+        visited_nodes = 1
+
+        # Utilizar una cola de prioridad (heap) para manejar los nodos a expandir
+        priority_queue = [(f[start[0]][start[1]], start)]
 
         while priority_queue:
-            cost, (x, y) = heapq.heappop(priority_queue)
+            _, current_position = heapq.heappop(priority_queue)
+            x, y = current_position
 
+            # Verificar si hemos llegado al punto final
             if (x, y) == self.env.goal_position:
                 path = []
-                while (x, y) != self.env.initial_position:
-                    path.append((x, y))
-                    x, y = self.path[x][y]
-                path.append(self.env.initial_position)
+                while current_position:
+                    path.append(current_position)
+                    current_position = visitado[current_position[0]][current_position[1]]
                 path.reverse()
-                return path, len(visited)
+                return path, visited_nodes
 
-            if (x, y) in visited:
-                continue
+            # Generar los vecinos posibles (arriba, abajo, izquierda, derecha)
+            possible_moves = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-            visited.add((x, y))
+            for move in possible_moves:
+                new_x, new_y = x + move[0], y + move[1]
 
-            possibles_moves = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+                # Verificar si la nueva posición está dentro de la matriz y no es un obstáculo
+                if (
+                        0 <= new_x < self.env.matrix_size
+                        and 0 <= new_y < self.env.matrix_size
+                        and not visitado[new_x][new_y]
+                        and self.env.matrix[new_x][new_y] == 0
+                ):
+                    nuevo_g = g[x][y] + 1
+                    if nuevo_g < g[new_x][new_y]:
+                        visited_nodes += 1
+                        visitado[new_x][new_y] = current_position
+                        g[new_x][new_y] = nuevo_g
+                        f[new_x][new_y] = nuevo_g + 2 * euclidean_distance((new_x, new_y), self.env.goal_position)
+                        heapq.heappush(priority_queue, (f[new_x][new_y], (new_x, new_y)))
 
-            for moves in possibles_moves:
-                new_x, new_y = x + moves[0], y + moves[1]
-
-                if 0 <= new_x < matrix_size and 0 <= new_y < matrix_size and self.env.matrix[new_x][new_y] == 0:
-                    new_cost = cost + 1
-
-                    # Estimación heurística (en este caso, distancia Manhattan)
-                    heuristic = abs(new_x - self.env.goal_position[0]) + abs(new_y - self.env.goal_position[1])
-
-                    priority = new_cost + heuristic
-
-                    if new_cost < cost_so_far[new_x][new_y]:
-                        cost_so_far[new_x][new_y] = new_cost
-                        heapq.heappush(priority_queue, (priority, (new_x, new_y)))
-                        self.path[new_x][new_y] = (x, y)
-
-        return [], len(visited)
+        # Si no se encuentra un camino, devuelve una lista vacía
+        return [], visited_nodes
 
     def bfs(self):
         matrix_size = self.env.matrix_size
