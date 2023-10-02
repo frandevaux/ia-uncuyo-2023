@@ -23,5 +23,5 @@ result[0].print_board()"""
 from plotter import boxPlotGenerator
 
 for i in range(1):
-    boxPlotGenerator(5, 'results_iteration_' + str(i+1) +'.csv', 'boxplot' + str(i+1) + '.png', 15)
+    boxPlotGenerator(30, 'results_iteration_' + str(i+1) +'.csv', 'boxplot' + str(i+1) + '.png')
 
