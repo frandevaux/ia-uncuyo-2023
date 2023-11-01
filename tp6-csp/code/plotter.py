@@ -71,6 +71,9 @@ def boxPlotGenerator():
     # Muestra el gráfico
     plt.show()
 
+    # Guardar el grafico
+    fig.savefig('boxplot_time.png')
+
     # Genera el gráfico
     data = [backtracking_steps, forwardchecking_steps]
 
@@ -92,3 +95,6 @@ def boxPlotGenerator():
 
     # Muestra el gráfico
     plt.show()
+
+    # Guardar el grafico
+    fig.savefig('boxplot_steps.png')

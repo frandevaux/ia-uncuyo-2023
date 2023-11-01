@@ -126,9 +126,9 @@ La complejidad temporal de esta implementación es O(n^2 \* d^2), donde n repres
 
 ### 5. Demostrar la correctitud del algoritmo CSP para árboles estructurados (sección 5.4, p. 172 AIMA 2da edición). Para ello, demostrar:
 
-a. Que para un CSP cuyo grafo de restricciones es un árbol, 2-consistencia (consistencia de arco) implica n-consistencia (siendo n número total de variables)
+#### a. Que para un CSP cuyo grafo de restricciones es un árbol, 2-consistencia (consistencia de arco) implica n-consistencia (siendo n número total de variables)
 
-b. Argumentar por qué lo demostrado en a. es suficiente.
+#### b. Argumentar por qué lo demostrado en a. es suficiente.
 
 #### Demostración:
 
@@ -144,10 +144,12 @@ La conclusión sacada es importante debido a que en un CSP, lo que se busca es e
 
 ### 6. Implementar una solución al problema de las n-reinas utilizando una formulación CSP
 
-    a. Implementar una solución utilizando backtracking
-    b. Implementar una solución utilizando encadenamiento hacia adelante.
-    c. En cada variante, calcular los tiempos de ejecución para los casos de 4, 8, 10,
-    12 y 15 reinas.
-    d. En cada variante, calcular la cantidad de estados recorridos antes de llegar a la
-    solución para los casos de 4, 8, 10, 12 y 15 reinas.
-    e. Realizar un gráfico de cajas para los puntos c y d.
+A continuación se muestran los graficos de caja y bigotes para el tiempo de ejecución de la solución implementada en función del algoritmo implementado.
+![tiempos](results/boxplot_time.png)
+
+Podemos observar que tanto el algoritmo de backtracking como el de forward checking tienen un tiempo de ejecucion similar, con una minima diferencia en favor del backtracking.
+
+En los siguientes graficos se puede observar la cantidad de pasos que realiza cada algoritmo para encontrar la solución.
+![pasos](results/boxplot_steps.png)
+
+Se puede concluir que el algoritmo de forward checking tiene una cantidad de pasos menor que el de backtracking. Este detalle sumado al tiempo de ejecución similar, nos permite determinar que el algoritmo de forward checking es el más eficiente para resolver el problema de las n-reinas.
