@@ -1,16 +1,16 @@
 import matplotlib.pyplot as plt
 import time
 
-from board import NQueensBacktrackingSolver, NQueensForwardCheckingSolver
+from board import BacktrackingSolver, ForwardCheckingSolver
 
-solver = NQueensForwardCheckingSolver(15)
+solver = ForwardCheckingSolver(15)
 board, steps = solver.run()
 solver.print_solution()
 
 print(steps)
 print(solver.calculate_conflicts(board))
 
-solver = NQueensBacktrackingSolver(15)
+solver = BacktrackingSolver(15)
 board, steps = solver.run()
 solver.print_solution()
 
@@ -39,11 +39,11 @@ def boxPlotGenerator():
 
         print("Board size: " + str(board_size))
 
-        board, steps, execution_time = run_algorithm(NQueensBacktrackingSolver, board_size)
+        board, steps, execution_time = run_algorithm(BacktrackingSolver, board_size)
         backtracking_times.append(execution_time)
         backtracking_steps.append(steps)
 
-        board, steps, execution_time = run_algorithm(NQueensForwardCheckingSolver, board_size)
+        board, steps, execution_time = run_algorithm(ForwardCheckingSolver, board_size)
         forwardchecking_times.append(execution_time)
         forwardchecking_steps.append(steps)
 
