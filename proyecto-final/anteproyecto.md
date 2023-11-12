@@ -26,6 +26,10 @@ El dataset cuenta con 18 variables entre las cuales se destacan:
 
 El objetivo fundamental de nuestro proyecto es desarrollar un modelo de machine learning que permita predecir situaciones de bullying en base a las demás variables. Al utilizar técnicas avanzadas de análisis de datos y aprendizaje automático, aspiramos a identificar patrones y relaciones ocultas en los datos que nos permitan anticipar casos de bullying, proporcionando así una herramienta efectiva para la prevención y el apoyo a los estudiantes afectados.
 
+### Justificación
+
+Al desarrollar un modelo de predicción sólido, se puede brindar una herramienta valiosa para la detección temprana y la prevención del bullying mediante encuestas en grandes cantidades de estudiantes, algo que no podría ser posible sin el uso de técnicas de inteligencia artificial, avisando de estos posibles casos de bullying a profesionales para que tomen cartas en el asunto. Este modelo podría contribuir al bienestar de los estudiantes y a la creación de un entorno escolar más seguro y saludable.
+
 ### Estado del arte
 
 Se ha llevado a cabo una búsqueda de proyectos con características similares a nuestro objetivo de desarrollo. La mayoría de los documentos encontrados se centran en la clasificación a partir de texto, a diferencia de los datos normalizados que tenemos previsto utilizar. A continuación, se presentan algunos de los artículos destacados:
@@ -48,10 +52,6 @@ Adicionalmente, en relación al dataset con el que planeamos trabajar, se han ll
 - [**"Bullying in Schools"**](https://www.kaggle.com/code/ashokrajuyadav/bullying-in-schools)
    - Autor: Ashok Raju Onteru (2023)
    - Se utilizan distintos algoritmos de random forest con oversampling (XGB y SKLEARN), obteniendo 70.28% y 77.37% de accuracy, respectivamente.
-
-### Justificación
-
-Al desarrollar un modelo de predicción sólido, se puede brindar una herramienta valiosa para la detección temprana y la prevención del bullying mediante encuestas en grandes cantidades de estudiantes, algo que no podría ser posible sin el uso de técnicas de inteligencia artificial, avisando de estos posibles casos de bullying a profesionales para que tomen cartas en el asunto. Este modelo podría contribuir al bienestar de los estudiantes y a la creación de un entorno escolar más seguro y saludable.
 
 ### Métricas
 
