@@ -67,4 +67,6 @@ En mi opinión personal, independientemente de los avances tecnológicos, consid
 No debemos cerrarnos ante los cambios que proponen las Inteligencias Artificiales Generativas, al final son una herramienta más para solucionar el llevar a cabo ideas humanas. 
 Existe una gran importancia de que estos inventos no queden en manos de unos pocos. Es entendible que se necesita una reglamentación para tratar el uso de las tecnologías, pero es independiente a quién lo puede usar y quién no.
 
+## Mapa mental
 
+[Link del mapa mental](https://www.mindomo.com/mindmap/f742413fd7e547a394435e61eadf1ec6)
